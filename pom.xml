@@ -1,0 +1,101 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.manusovich.jmeter</groupId>
+    <artifactId>jmeter-xmpp-plugin</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>jmeter-xmpp-plugin</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jmeter.version>2.11</jmeter.version>
+        <smack.version>3.1.0</smack.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- JMeter -->
+        <dependency>
+            <groupId>org.apache.jmeter</groupId>
+            <artifactId>ApacheJMeter_core</artifactId>
+            <version>${jmeter.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.jmeter</groupId>
+            <artifactId>ApacheJMeter_components</artifactId>
+            <version>${jmeter.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.jmeter</groupId>
+            <artifactId>ApacheJMeter_functions</artifactId>
+            <version>${jmeter.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Smack -->
+        <dependency>
+            <groupId>jivesoftware</groupId>
+            <artifactId>smack</artifactId>
+            <version>${smack.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jivesoftware</groupId>
+            <artifactId>smackx</artifactId>
+            <version>${smack.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <configuration>
+                    <tasks>
+                        <property name="compile_classpath" refid="maven.compile.classpath"/>
+                        <property name="runtime_classpath" refid="maven.runtime.classpath"/>
+                        <property name="test_classpath" refid="maven.test.classpath"/>
+                        <property name="plugin_classpath" refid="maven.plugin.classpath"/>
+
+                        <!-- Jemeter 2.11 has bug in source code in the file JMeter.java. They parsing this property
+                         and trying to split that with ; always. Instead of using system path.separator -->
+                        <loadresource property="runtime_classpath_fixed">
+                            <propertyresource name="runtime_classpath"/>
+                            <filterchain>
+                                <tokenfilter>
+                                    <filetokenizer/>
+                                    <replacestring from=":" to=";"/>
+                                </tokenfilter>
+                            </filterchain>
+                        </loadresource>
+
+                        <echo message="compile classpath: ${compile_classpath}"/>
+                        <echo message="runtime classpath: ${runtime_classpath}"/>
+                        <echo message="runtime classpath fixed: ${runtime_classpath_fixed}"/>
+                        <echo message="test classpath:    ${test_classpath}"/>
+                        <echo message="plugin classpath:  ${plugin_classpath}"/>
+                        <echo message="path separator:  ${path.separator}"/>
+
+                        <exec executable="${jmeter.executable}">
+                            <arg value="-Jsearch_paths=${runtime_classpath_fixed}"/>
+                        </exec>
+                    </tasks>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
