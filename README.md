@@ -1,4 +1,4 @@
-jmeter-xmpp-plugin
+JMeter Xmpp Plugin
 ==================
 
 # Usage
