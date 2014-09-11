@@ -1,4 +1,4 @@
-package com.manusovich.jmeter;
+package com.manusovich.jmeter.controller;
 
 import org.apache.jmeter.testbeans.BeanInfoSupport;
 
@@ -22,11 +22,8 @@ public class XmppControllerBeanInfo extends BeanInfoSupport {
 
         getBeanDescriptor().getValue(RESOURCE_BUNDLE);
 
-        createPropertyGroup(GROUP, new String[]{XMPP_SERVER});
-        createPropertyGroup(GROUP, new String[]{XMPP_SERVER_PORT});
-        createPropertyGroup(GROUP, new String[]{RECEIVER_JID});
-        createPropertyGroup(GROUP, new String[]{SENDER_JID});
-        createPropertyGroup(GROUP, new String[]{SENDER_PASSWORD});
+        createPropertyGroup(GROUP, new String[]{XMPP_SERVER, XMPP_SERVER_PORT,
+                RECEIVER_JID, SENDER_JID, SENDER_PASSWORD});
 
         setupProperty(XMPP_SERVER);
         setupProperty(XMPP_SERVER_PORT);

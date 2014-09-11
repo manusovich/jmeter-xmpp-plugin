@@ -9,8 +9,6 @@ import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -30,7 +28,7 @@ public class XmppClient {
             connection.connect();
             System.out.println("Signon " + jabberUsername + " " + jabberPassword);
             connection.login(jabberUsername, jabberPassword);
-
+            System.out.println("Signon " + jabberUsername + " " + jabberPassword + " - Success");
         } catch (XMPPException e) {
             System.out.println("e = " + e);
             e.printStackTrace();
@@ -56,9 +54,7 @@ public class XmppClient {
                     "        \"senderTime\": " + System.currentTimeMillis() + ",\n" +
                     "        \"expirationPeriodOffline\": " + (min * 60 * 1000) + ",\n" +
                     "        \"text\": {\n" +
-                    "            \"plain\": \"" + message + ". Has been sent: "
-                    + new SimpleDateFormat("MM/dd/yyyy HH:MM").format(new Date())
-                    + ". Life time " + min + "min.\"\n" +
+                    "            \"plain\": \"" + message + "\"\n" +
                     "        }\n" +
                     "    }\n" +
                     "}");
@@ -69,8 +65,13 @@ public class XmppClient {
     }
 
     public void disconnect() {
-        System.out.println("Disconnect = " + connection.getUser());
-        connection.sendPacket(new Presence(Presence.Type.unavailable));
-        connection.disconnect();
+        String user = connection.getUser();
+        System.out.println("Disconnect = " + user);
+        try {
+            connection.sendPacket(new Presence(Presence.Type.unavailable));
+            connection.disconnect();
+        } catch (Throwable th) {
+            System.out.println("Disconnect = " + user + " - failed");
+        }
     }
 }

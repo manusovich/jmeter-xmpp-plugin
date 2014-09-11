@@ -92,6 +92,7 @@
 
                         <exec executable="${jmeter.executable}">
                             <arg value="-Jsearch_paths=${runtime_classpath_fixed}"/>
+                            <arg value="-t/Users/amanusovich1/work/jmeter-xmpp-plugin/xmpp.jmx"/>
                         </exec>
                     </tasks>
                 </configuration>
