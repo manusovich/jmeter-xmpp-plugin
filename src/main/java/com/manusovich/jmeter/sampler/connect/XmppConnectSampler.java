@@ -21,7 +21,12 @@ public class XmppConnectSampler extends AbstractSampler implements TestBean, Xmp
     @Override
     public SampleResult sample(Entry entry) {
         xmppInit();
-        return new SampleResult();
+        SampleResult sampleResult = new SampleResult();
+        sampleResult.setSampleLabel("XmppConnectSampler");
+        sampleResult.setResponseMessageOK();
+        sampleResult.setResponseCodeOK();
+        sampleResult.setResponseOK();
+        return sampleResult;
     }
 
     private void xmppInit() {

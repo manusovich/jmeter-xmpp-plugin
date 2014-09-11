@@ -20,7 +20,12 @@ public class XmppMessageSampler extends AbstractSampler implements TestBean, Xmp
     public SampleResult sample(Entry entry) {
         System.out.println(this + " message from (" + senderJid + ") to (" + receiverJid + "): " + getMessage());
         xmppController.getClient(senderJid).sendMessage(getReceiverJid(), getMessage());
-        return new SampleResult();
+        SampleResult sampleResult = new SampleResult();
+        sampleResult.setSampleLabel("XmppMessageSampler");
+        sampleResult.setResponseMessageOK();
+        sampleResult.setResponseCodeOK();
+        sampleResult.setResponseOK();
+        return sampleResult;
     }
 
 
